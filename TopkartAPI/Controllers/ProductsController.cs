@@ -7,24 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using TopkartCore.Models;
 using TopkartCore.Services;
 
-namespace TopkartCore.Controllers
+namespace TopkartAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        public IProductService productService { get; set; }
+        public IProductService ProductService { get; set; }
 
         public ProductsController(IProductService productService)
         {
-            this.productService = productService;
+            this.ProductService = productService;
         }
 
         // GET: api/Products
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await productService.GetProducts();
+            var products = await ProductService.GetProducts();
             return Ok(products);
         }
 
@@ -32,7 +32,7 @@ namespace TopkartCore.Controllers
         [HttpGet("{id}", Name = "Get")]
         public async Task<IActionResult> Get(long id)
         {
-            var product = await productService.GetProductById(id);
+            var product = await ProductService.GetProductById(id);
             return Ok(product);
         }
 
@@ -41,16 +41,16 @@ namespace TopkartCore.Controllers
         public async Task<IActionResult> AddProduct([FromBody] AddProductPayload addProductPayload)
         {
             var product = addProductPayload.ToProduct();
-            var result = await productService.AddProduct(product);
+            var result = await ProductService.AddProduct(product);
             return Ok(result);
         }
 
         // PUT: api/Products/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProduct(long id, [FromBody] ProductPayload productPayload)
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductPayload productPayload)
         {
             var product = productPayload.ToProduct();
-            var result = await productService.UpdateProduct(product);
+            var result = await ProductService.UpdateProduct(product);
             return Ok(result);
         }
 
@@ -58,7 +58,7 @@ namespace TopkartCore.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(long id)
         {
-            var isProductDeleted = await productService.DeleteProduct(id);
+            var isProductDeleted = await ProductService.DeleteProduct(id);
             return Ok(isProductDeleted);
         }
     }
