@@ -6,10 +6,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using TopkartCore.DBContext;
+using TopkartCore.Repositories;
+using TopkartCore.Services;
 
 namespace TopkartAPI
 {
@@ -26,6 +30,18 @@ namespace TopkartAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            ////////////////////////////////////////////////////////
+
+            var connection = Configuration.GetConnectionString("TopkartDB");
+            services.AddDbContext<TopkartDBContext>
+                (options => options.UseSqlServer(connection));
+
+            //Register all services
+            services.AddTransient<IProductService, ProductService>();
+
+
+            //Register all repositories
+            services.AddTransient<IProductRepository, ProductRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
