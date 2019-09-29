@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using TopkartCore.Models;
 using TopkartCore.Services;
 
-namespace TopkartCore.Controllers
+namespace TopkartAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/products")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
